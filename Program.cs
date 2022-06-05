@@ -1,3 +1,19 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿namespace Spicetify_Manager;
+using static cgozenity;
 
-Console.WriteLine("Hello, World!");
+public static class Program
+{
+
+    public static async Task Main(string[] args)
+    {
+        // unfinished
+        await CheckForUpdate();
+    }
+
+    private static async Task CheckForUpdate()
+    {
+        // unfinished
+        GithubVersion ghVersion = await UpdateChecker.CheckGitHubNewerVersion();
+        Console.Write(ghVersion.LatestGithubVersion);
+    }
+}

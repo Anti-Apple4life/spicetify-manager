@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="cgozenity-csharp" Version="0.1.1" />
+      <PackageReference Include="octokit" Version="0.51.0" />
     </ItemGroup>
 
 </Project>
