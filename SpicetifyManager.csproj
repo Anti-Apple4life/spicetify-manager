@@ -8,4 +8,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="cgozenity-csharp" Version="0.1.1" />
+    </ItemGroup>
+
 </Project>
