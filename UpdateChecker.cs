@@ -24,6 +24,8 @@ public class UpdateChecker
         {
             //The version on GitHub is more up to date than this local release.
             githubVersion.IsGithubNewer = true;
+            githubVersion.IsBeta = false;
+            githubVersion.IsEqualToGithub = false;
             githubVersion.LatestGithubVersion = latestGitHubVersion.ToString();
             githubVersion.LocalVersion = localVersion.ToString();
         }
@@ -31,6 +33,8 @@ public class UpdateChecker
         {
             //This local version is greater than the release version on GitHub.
             githubVersion.IsBeta = true;
+            githubVersion.IsEqualToGithub = false;
+            githubVersion.IsGithubNewer = false;
             githubVersion.LatestGithubVersion = latestGitHubVersion.ToString();
             githubVersion.LocalVersion = localVersion.ToString();
         }
@@ -38,6 +42,8 @@ public class UpdateChecker
         {
             //This local Version and the Version on GitHub are equal.
             githubVersion.IsEqualToGithub = true;
+            githubVersion.IsBeta = false;
+            githubVersion.IsGithubNewer = false;
             githubVersion.LatestGithubVersion = latestGitHubVersion.ToString();
             githubVersion.LocalVersion = localVersion.ToString();
         }
