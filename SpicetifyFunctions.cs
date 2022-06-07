@@ -6,6 +6,18 @@ public class SpicetifyFunctions
 {
     public static void SpicetifyUpgrade()
     {
-        Process.Start("Spicetify", "upgrade");
+        Process process = Process.Start("Spicetify", "upgrade");
+        process.WaitForExit();
+    }
+    public static void SpicetifyBackup()
+    {
+        Process process = Process.Start("spicetify", "backup");
+        process.WaitForExit();
+    }
+
+    public static void SpicetifyApply()
+    {
+        Process process = Process.Start("spicetify", "apply");
+        process.WaitForExit();
     }
 }

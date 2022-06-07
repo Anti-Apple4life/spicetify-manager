@@ -7,5 +7,4 @@ public class GithubVersion
     public bool IsGithubNewer;
     public bool IsBeta;
     public bool IsEqualToGithub;
-
 }

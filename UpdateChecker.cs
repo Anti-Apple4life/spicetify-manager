@@ -1,8 +1,9 @@
 using System.Diagnostics;
 using Octokit;
-namespace Spicetify_Manager;
-using static ExtraStuff;
 
+namespace Spicetify_Manager;
+
+using static ExtraStuff;
 
 public static class UpdateChecker
 {
@@ -12,7 +13,8 @@ public static class UpdateChecker
         //Get all releases from GitHub
         //Source: https://octokitnet.readthedocs.io/en/latest/getting-started/
         GitHubClient client = new GitHubClient(new ProductHeaderValue("SpicetifyManagerUpdateCheck"));
-        IReadOnlyList<Release> releases = await client.Repository.Release.GetAll("Anti-Apple4life", "spicetify-manager");
+        IReadOnlyList<Release> releases =
+            await client.Repository.Release.GetAll("Anti-Apple4life", "spicetify-manager");
 
         //Setup the versions
         Version latestGitHubVersion = new Version(releases[0].TagName);
@@ -55,11 +57,13 @@ public static class UpdateChecker
 
     public static async Task<GithubVersion?> CheckSpicetifyUpdate()
     {
-        if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".spicetify")) == false)
+        if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                ".spicetify")) == false)
         {
             Console.WriteLine("Spicetify is not installed, cannot check version");
             return null;
         }
+
         //Get all releases from GitHub
         //Source: https://octokitnet.readthedocs.io/en/latest/getting-started/
         GitHubClient client = new GitHubClient(new ProductHeaderValue("SpicetifyUpdateCheck"));
@@ -85,6 +89,7 @@ public static class UpdateChecker
 
             await process.WaitForExitAsync();
         }
+
         Version localVersion = new Version(output); //Replace this with your local version. 
         //Only tested with numeric values.
 
@@ -96,7 +101,7 @@ public static class UpdateChecker
         {
             case < 0:
                 //The version on GitHub is more up to date than this local release.
-            
+
                 spicetifyGithubVersion.IsGithubNewer = true;
                 spicetifyGithubVersion.IsBeta = false;
                 spicetifyGithubVersion.IsEqualToGithub = false;
@@ -123,5 +128,4 @@ public static class UpdateChecker
 
         return spicetifyGithubVersion;
     }
-    
 }
