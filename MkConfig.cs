@@ -9,17 +9,20 @@ public class SpicetifyManagerConfig
     public bool IsMarketplaceInstalled { get; set; }
     public bool IsSpicetifyApplied { get; set; }
     public bool IsSpicetifyBackedUp { get; set; }
+    public bool IsLinuxMode { get; set; }
 }
 
 public static class Config
 {
-    public static void MkConfig(bool isMarketplaceInstalled, bool isSpicetifyApplied, bool isSpicetifyBackedUp)
+    public static void MkConfig(bool isMarketplaceInstalled, bool isSpicetifyApplied, bool isSpicetifyBackedUp,
+        bool isLinuxMode)
     {
-        SpicetifyManagerConfig config = new SpicetifyManagerConfig
+        SpicetifyManagerConfig config = new()
         {
             IsMarketplaceInstalled = isMarketplaceInstalled,
             IsSpicetifyApplied = isSpicetifyApplied,
             IsSpicetifyBackedUp = isSpicetifyBackedUp,
+            IsLinuxMode = isLinuxMode
         };
 
         JsonTypeInfo<SpicetifyManagerConfig> typeInfo = SourceGenerationContext.Default.SpicetifyManagerConfig;

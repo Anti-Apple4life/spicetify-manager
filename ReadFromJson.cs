@@ -1,12 +1,12 @@
-namespace Spicetify_Manager;
-
 using System.Text.Json.Nodes;
+
+namespace Spicetify_Manager;
 
 public static class ReadFromJson
 {
     public static SpicetifyManagerConfig ReadJson()
     {
-        SpicetifyManagerConfig config = new SpicetifyManagerConfig();
+        SpicetifyManagerConfig config = new();
         // ReSharper disable once InvertIf
         if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "SpicetifyManager.json")))
@@ -20,6 +20,7 @@ public static class ReadFromJson
             config.IsSpicetifyApplied = spicetifyNode["IsSpicetifyApplied"]!.GetValue<bool>();
 
             config.IsSpicetifyBackedUp = spicetifyNode["IsSpicetifyBackedUp"]!.GetValue<bool>();
+            config.IsLinuxMode = spicetifyNode["IsLinuxMode"]!.GetValue<bool>();
         }
 
         return config;

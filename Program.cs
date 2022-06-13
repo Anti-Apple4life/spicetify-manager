@@ -1,10 +1,13 @@
-﻿namespace Spicetify_Manager;
+﻿using System.Runtime.InteropServices;
+
+namespace Spicetify_Manager;
 
 using static cgozenity;
 using static UrlOpener;
 using static InstallSpicetifyClass;
 using static SpicetifyFunctions;
 using static ReadFromJson;
+using static ExtraStuff;
 
 public static class Program
 {
@@ -12,19 +15,40 @@ public static class Program
     {
         SpicetifyManagerConfig config = ReadJson();
         // unfinished
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            bool openWebsite =
+                zenQuestion(
+                    "Spicetify Manager is not supported with Windows currently. Do you want to open the manual install guide?",
+                    "Spicetify Manager");
+            if (openWebsite)
+            {
+                OpenUrl("https://spicetify.app/docs/getting-started");
+            }
+
+            Environment.Exit(0);
+        }
+
+        bool isVersionUnsupported = await SpotifyVersionIsSupported();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || isVersionUnsupported)
+        {
+            zenInfo(
+                "Spicetify is not able to handle the current Spotify version on MacOS. Please wait for Spicetify to be compatible with the current Spotify version.",
+                "Spicetify Manager");
+            Environment.Exit(0);
+        }
+
         await CheckAndAlertManagerUpdate();
         if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".spicetify")) == false)
-        {
+                ".spicetify")) == false ||
+            Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "spicetify-cli")) == false)
             InstallSpicetify();
-        }
-        if (config.IsMarketplaceInstalled == false)
-        {
-            InstallSpicetifyMarketplace();
-        }
-        
 
-        await CheckAndAlertSpicetifyUpdate();
+        if (config.IsMarketplaceInstalled == false) InstallSpicetifyMarketplace();
+
+        if (config.IsLinuxMode == false) await CheckAndAlertSpicetifyUpdate();
+        // select the task for spicetify to run
     }
 
     private static async Task CheckAndAlertManagerUpdate()
@@ -55,10 +79,7 @@ public static class Program
                     "Version " + spicetifyUpdate.LatestGithubVersion +
                     " of Spicetify is available. Do you want to update?\nCurrent Spicetify version: " +
                     spicetifyUpdate.LocalVersion, "Updater");
-            if (update)
-            {
-                SpicetifyUpgrade();
-            }
+            if (update) SpicetifyUpgrade();
         }
     }
 }

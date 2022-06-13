@@ -9,16 +9,16 @@ public static class UpdateChecker
 {
     public static async Task<GithubVersion> CheckGitHubNewerVersion()
     {
-        GithubVersion githubVersion = new GithubVersion();
+        GithubVersion githubVersion = new();
         //Get all releases from GitHub
         //Source: https://octokitnet.readthedocs.io/en/latest/getting-started/
-        GitHubClient client = new GitHubClient(new ProductHeaderValue("SpicetifyManagerUpdateCheck"));
+        GitHubClient client = new(new ProductHeaderValue("SpicetifyManagerUpdateCheck"));
         IReadOnlyList<Release> releases =
             await client.Repository.Release.GetAll("Anti-Apple4life", "spicetify-manager");
 
         //Setup the versions
-        Version latestGitHubVersion = new Version(releases[0].TagName);
-        Version localVersion = new Version("1.0.0"); //Replace this with your local version. 
+        Version latestGitHubVersion = FixVersion(releases[0].TagName);
+        Version localVersion = new("1.0.0"); //Replace this with your local version. 
         //Only tested with numeric values.
 
         //Compare the Versions
@@ -66,14 +66,14 @@ public static class UpdateChecker
 
         //Get all releases from GitHub
         //Source: https://octokitnet.readthedocs.io/en/latest/getting-started/
-        GitHubClient client = new GitHubClient(new ProductHeaderValue("SpicetifyUpdateCheck"));
+        GitHubClient client = new(new ProductHeaderValue("SpicetifyUpdateCheck"));
         IReadOnlyList<Release> releases = await client.Repository.Release.GetAll("spicetify", "spicetify-cli");
 
         //Setup the versions
 
         Version latestGitHubVersion = FixVersion(releases[0].TagName);
         string output;
-        using (Process process = new Process())
+        using (Process process = new())
         {
             process.StartInfo.FileName = "spicetify";
             process.StartInfo.Arguments = "--version";
@@ -90,13 +90,13 @@ public static class UpdateChecker
             await process.WaitForExitAsync();
         }
 
-        Version localVersion = new Version(output); //Replace this with your local version. 
+        Version localVersion = new(output); //Replace this with your local version. 
         //Only tested with numeric values.
 
         //Compare the Versions
         //Source: https://stackoverflow.com/questions/7568147/compare-version-numbers-without-using-split-function
         int versionComparison = localVersion.CompareTo(latestGitHubVersion);
-        GithubVersion spicetifyGithubVersion = new GithubVersion();
+        GithubVersion spicetifyGithubVersion = new();
         switch (versionComparison)
         {
             case < 0:

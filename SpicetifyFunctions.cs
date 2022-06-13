@@ -9,6 +9,7 @@ public class SpicetifyFunctions
         Process process = Process.Start("Spicetify", "upgrade");
         process.WaitForExit();
     }
+
     public static void SpicetifyBackup()
     {
         Process process = Process.Start("spicetify", "backup");

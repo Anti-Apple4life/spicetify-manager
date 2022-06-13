@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using static cgozenity;
 using static Spicetify_Manager.Config;
 using static Spicetify_Manager.SpicetifyFunctions;
@@ -12,10 +13,20 @@ public static class InstallSpicetifyClass
         bool install = zenQuestion("Spicetify is not installed, do you want to install it?", "Spicetify Manager");
         if (install)
         {
-            Process process = Process.Start("sh",
-                "-c \"curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.sh | sh\"");
-            process.WaitForExit();
-            MkConfig(false, false, false);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process process = Process.Start("sh",
+                    "-c \"curl -fsSL https://raw.githubusercontent.com/Anti-Apple4life/spicetify-cli/master/install.sh | sh\"");
+                process.WaitForExit();
+                MkConfig(false, false, false, true);
+            }
+            else
+            {
+                Process process = Process.Start("sh",
+                    "-c \"curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-cli/master/install.sh | sh\"");
+                process.WaitForExit();
+                MkConfig(false, false, false, false);
+            }
         }
         else
         {
@@ -37,11 +48,11 @@ public static class InstallSpicetifyClass
             Process process = Process.Start("sh",
                 "-c \"curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/install.sh | sh\"");
             process.WaitForExit();
-            MkConfig(true, false, false);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) MkConfig(true, false, false, true);
         }
         else
         {
-            MkConfig(false, false, false);
+            MkConfig(false, false, false, false);
         }
     }
 }
