@@ -7,7 +7,6 @@ using static UrlOpener;
 using static InstallSpicetifyClass;
 using static SpicetifyFunctions;
 using static ReadFromJson;
-using static ExtraStuff;
 
 public static class Program
 {
@@ -25,6 +24,7 @@ public static class Program
             {
                 OpenUrl("https://spicetify.app/docs/getting-started");
             }
+            Environment.Exit(0);
         }
         
 
@@ -37,7 +37,18 @@ public static class Program
 
         if (config.IsLinuxMode == false) await CheckAndAlertSpicetifyUpdate();
         // select the task for spicetify to run
-        string options = zenList("Send Feedback, About", "Select an option", "Spicetify Manager");
+        config = ReadJson();
+        if (config.IsSpicetifyBackedUp)
+        {
+            string options = zenList("Backup Spotify", "Select an option", "Spicetify Manager");
+            config = ReadJson();
+        }
+        else
+        {
+            string options = zenList("Backup Spotify (Required before applying)", "Select an option", "Spicetify Manager");
+            config = ReadJson();
+        }
+        
     }
 
     private static async Task CheckAndAlertManagerUpdate()

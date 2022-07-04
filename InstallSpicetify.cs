@@ -48,11 +48,25 @@ public static class InstallSpicetifyClass
             Process process = Process.Start("sh",
                 "-c \"curl -fsSL https://raw.githubusercontent.com/spicetify/spicetify-marketplace/main/install.sh | sh\"");
             process.WaitForExit();
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) MkConfig(true, false, false, true);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                MkConfig(true, true, false, true);
+            }
+            else
+            {
+                MkConfig(true, true, true, false);
+            }
         }
         else
         {
-            MkConfig(false, false, false, false);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                MkConfig(false, false, false, true);
+            }
+            else
+            {
+                MkConfig(false, false, true, false);
+            }
         }
     }
 }
