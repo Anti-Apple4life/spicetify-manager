@@ -25,30 +25,19 @@ public static class Program
             {
                 OpenUrl("https://spicetify.app/docs/getting-started");
             }
-
-            Environment.Exit(0);
         }
-
-        bool isVersionUnsupported = await SpotifyVersionIsSupported();
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || isVersionUnsupported)
-        {
-            zenInfo(
-                "Spicetify is not able to handle the current Spotify version on MacOS. Please wait for Spicetify to be compatible with the current Spotify version.",
-                "Spicetify Manager");
-            Environment.Exit(0);
-        }
+        
 
         await CheckAndAlertManagerUpdate();
         if (Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                ".spicetify")) == false ||
-            Directory.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-                "spicetify-cli")) == false)
+                ".spicetify")) == false)
             InstallSpicetify();
 
         if (config.IsMarketplaceInstalled == false) InstallSpicetifyMarketplace();
 
         if (config.IsLinuxMode == false) await CheckAndAlertSpicetifyUpdate();
         // select the task for spicetify to run
+        string options = zenList("Send Feedback, About", "Select an option", "Spicetify Manager");
     }
 
     private static async Task CheckAndAlertManagerUpdate()
